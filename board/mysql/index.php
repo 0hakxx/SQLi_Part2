@@ -1,4 +1,4 @@
-<?
+<?php
   include_once("../common.php");
     // SQL 관련 오류만 표시하도록 설정
     error_reporting(E_ERROR | E_PARSE);
@@ -31,7 +31,19 @@
     $query .= " order by {$sort_column} {$sort}";
   }
   
-  $result = $db_conn->query($query) or die("<br><br><br><center><h2>- 에러 발생 -</h2><h3>관리자에게 문의해주세요.</h3></center>");
+//  기존 아래 코드가 에러 페이지를 반환하지 않아 새로 try catch로 예외처리로 따로 작성
+//  $result = $db_conn->query($query) or die("<br><br><br><center><h2>- 에러 발생 -</h2><h3>관리자에게 문의해주세요.</h3></center>");
+    try {
+        $result = $db_conn->query($query);
+        if (!$result) {
+            throw new Exception("데이터베이스 쿼리 실패");
+        }
+    } catch (Exception $e) {
+        die("<br><br><br><center><h2>- 에러 발생 -</h2><h3>관리자에게 문의해주세요.</h3></center>");
+    }
+
+
+
   $num = $result->num_rows;
 ?>
 <!doctype html>
@@ -73,30 +85,30 @@
 			</tr>
 		  </thead>
 		  <tbody>
-			<?
+			<?php
 			if($num != 0) {
 				for ( $i=0; $i<$num; $i++ ) {
 				  $row = $result->fetch_assoc();
 			?>
 			<tr>
 			  <th scope="row" class="text-center"><?=$row["idx"]?></th>
-        <? if($row["secret"]=="y") { ?>
+        <?php if($row["secret"]=="y") { ?>
         <td><span style="display:inline-block; height:15px; width:15px;" data-feather="lock"></span>&nbsp;<a href="auth.php?idx=<?=$row["idx"]?>&mode=view"><?=$row["title"]?></a></td>
-        <? } else { ?>
+        <?php } else { ?>
           <td><a href="view.php?idx=<?=$row["idx"]?>"><?=$row["title"]?></a></td>
-        <? } ?>
+        <?php } ?>
 			  
 			  <td class="text-center"><?=$row["writer"]?></td>
 			  <td class="text-center"><?=$row["regdate"]?></td>
 			</tr>
-			<?
+			<?php
 				}
 			} else {
 			?>
             <tr>
               <td colspan="4" class="text-center">Posts does not exist.</td>
             </tr>
-			<?
+			<?php
 			}
 			?>
 		  </tbody>
