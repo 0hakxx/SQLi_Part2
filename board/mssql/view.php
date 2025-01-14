@@ -11,8 +11,8 @@
 		$query = "select * from {$tb_name} where idx={$idx} and password='{$password}'";
 	}
 
-	$result = @mssql_query($query, $db_conn) or die("<br><br><br><center><h2>- 에러 발생 -</h2><h3>관리자에게 문의해주세요.</h3></center>");
-	$num = @mssql_num_rows($result);
+    $result = @mssql_query($query, $db_conn) or die("<br><br><br><center><h2>- 에러 발생 -</h2><h3>관리자에게 문의해주세요.</h3></center>");
+    $num = @mssql_num_rows($result);
 
 ?>
 <!doctype html>
