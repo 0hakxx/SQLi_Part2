@@ -26,7 +26,9 @@
 		$content = str_replace("\r\n", "<br>", $content);
 		
 		$query = "insert into {$tb_name}(title, writer, password, content, secret, regdate) values('{$title}', '{$writer}', '{$password}', '{$content}', '{$secret}', getdate())";
-		@mssql_query($query, $db_conn) or die("<br><br><br><center><h2>- 에러 발생 -</h2><h3>관리자에게 문의해주세요.</h3></center>");
+//		기존 코드는 ErrorBased공격이 안 되어 주석 처리 후 새롭게 작성
+//      @mssql_query($query, $db_conn) or die("<br><br><br><center><h2>- 에러 발생 -</h2><h3>관리자에게 문의해주세요.</h3></center>");
+        mssql_query($query, $db_conn);
 	} else if($mode == "modify") {
 		$idx = $_POST["idx"];
 		# 한글 깨짐 방지를 위한 UTF-8 > EUC-KR 인코딩 변환
@@ -60,7 +62,10 @@
 		$content = str_replace("\r\n", "<br>", $content);
 		
 		$query = "update {$tb_name} set title='{$title}', writer='{$writer}', content='{$content}', secret='{$secret}', regdate=getdate() where idx={$idx}";
-		@mssql_query($query, $db_conn) or die("<br><br><br><center><h2>- 에러 발생 -</h2><h3>관리자에게 문의해주세요.</h3></center>");
+//		기존 코드는 ErrorBased공격이 안 되어 주석 처리 후 새롭게 작성
+//      @mssql_query($query, $db_conn) or die("<br><br><br><center><h2>- 에러 발생 -</h2><h3>관리자에게 문의해주세요.</h3></center>");
+        mssql_query($query, $db_conn);
+
 		mssql_free_result($result);
 	} else if($mode == "delete") {
 		$idx = $_POST["idx"];
@@ -78,7 +83,9 @@
 		
 		mssql_free_result($result);
 		$query = "delete from {$tb_name} where idx={$idx}";
-		@mssql_query($query, $db_conn) or die("<br><br><br><center><h2>- 에러 발생 -</h2><h3>관리자에게 문의해주세요.</h3></center>");
+//		기존 코드는 ErrorBased공격이 안 되어 주석 처리 후 새롭게 작성
+//      @mssql_query($query, $db_conn) or die("<br><br><br><center><h2>- 에러 발생 -</h2><h3>관리자에게 문의해주세요.</h3></center>");
+        mssql_query($query, $db_conn);
 	}
 
 	echo "<script>location.href='index.php';</script>";
